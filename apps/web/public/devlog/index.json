@@ -1,5 +1,17 @@
 [
   {
+    "title": "Orchestrating 20 Claude Instances",
+    "date": "2026-01-22",
+    "tags": [
+      "ai",
+      "devex",
+      "tools"
+    ],
+    "slug": "orchestrating-20-claude-instances",
+    "filename": "2026-01-22-orchestrating-20-claude-instances.md",
+    "weekKey": "2026-04"
+  },
+  {
     "title": "GasTown: Promising but Not Ready",
     "date": "2026-01-07",
     "tags": [
