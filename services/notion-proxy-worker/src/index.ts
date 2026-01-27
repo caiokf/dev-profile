@@ -18,12 +18,13 @@ type Env = {
 const NOTION_API_BASE = "https://api.notion.com";
 const NOTION_VERSION = "2022-06-28";
 
-// Default allowed origins (localhost for dev, production domain)
+// Default allowed origins (localhost for dev, production domains)
 const DEFAULT_ALLOWED_ORIGINS = [
   "http://localhost:5173",
   "http://localhost:4173",
   "http://127.0.0.1:5173",
   "https://caiokf.github.io",
+  "https://dev.caiokf.com",
 ];
 
 function getAllowedOrigins(env: Env): string[] {
@@ -42,7 +43,7 @@ function corsHeaders(origin: string | null, allowedOrigins: string[]): HeadersIn
   const allowedOrigin = origin && isOriginAllowed(origin, allowedOrigins) ? origin : allowedOrigins[0];
   return {
     "Access-Control-Allow-Origin": allowedOrigin,
-    "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+    "Access-Control-Allow-Methods": "GET, POST, PATCH, OPTIONS",
     "Access-Control-Allow-Headers": "Content-Type",
   };
 }
@@ -128,8 +129,8 @@ export default {
       return handleCORS(request, env);
     }
 
-    // Only allow GET and POST
-    if (request.method !== "GET" && request.method !== "POST") {
+    // Only allow GET, POST, PATCH
+    if (request.method !== "GET" && request.method !== "POST" && request.method !== "PATCH") {
       return new Response("Method not allowed", { status: 405 });
     }
 

@@ -25,8 +25,19 @@ type NotionBlocksResponse = {
   next_cursor: string | null;
 };
 
+type NotionAnnotations = {
+  bold: boolean;
+  italic: boolean;
+  strikethrough: boolean;
+  underline: boolean;
+  code: boolean;
+  color: string;
+};
+
 type NotionRichText = {
   plain_text: string;
+  href?: string | null;
+  annotations?: NotionAnnotations;
 };
 
 type NotionPageProperties = {
@@ -189,7 +200,7 @@ export class DataProviderNotion implements TechRadarDataProvider {
     const isNew = props["is-new"]?.checkbox ?? false;
     const statusValue = props.status?.select?.name ?? "";
     const status = this.normalizeStatus(statusValue, isNew);
-    const description = this.getRichTextValue(props.description?.rich_text);
+    const description = this.richTextToHtml(props.description?.rich_text);
 
     return {
       name,
@@ -206,6 +217,60 @@ export class DataProviderNotion implements TechRadarDataProvider {
       return "";
     }
     return richText.map((t) => t.plain_text).join("");
+  }
+
+  private richTextToHtml(richText: NotionRichText[] | undefined): string {
+    if (!richText || richText.length === 0) {
+      return "";
+    }
+
+    const htmlParts = richText.map((segment) => {
+      let text = this.escapeHtml(segment.plain_text);
+      const annotations = segment.annotations;
+
+      if (annotations) {
+        if (annotations.code) {
+          text = `<code>${text}</code>`;
+        }
+        if (annotations.bold) {
+          text = `<strong>${text}</strong>`;
+        }
+        if (annotations.italic) {
+          text = `<em>${text}</em>`;
+        }
+        if (annotations.strikethrough) {
+          text = `<s>${text}</s>`;
+        }
+        if (annotations.underline) {
+          text = `<u>${text}</u>`;
+        }
+      }
+
+      if (segment.href) {
+        text = `<a href="${this.escapeHtml(segment.href)}" target="_blank" rel="noopener">${text}</a>`;
+      }
+
+      return text;
+    });
+
+    // Wrap in paragraph and convert newlines to proper HTML
+    const html = htmlParts.join("");
+    const paragraphs = html.split("\n\n").filter((p) => p.trim());
+
+    if (paragraphs.length > 1) {
+      return paragraphs.map((p) => `<p>${p.replace(/\n/g, "<br>")}</p>`).join("");
+    }
+
+    return `<p>${html.replace(/\n/g, "<br>")}</p>`;
+  }
+
+  private escapeHtml(text: string): string {
+    return text
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
   }
 
   private normalizeStatus(status: string, isNew: boolean): BlipStatus {
