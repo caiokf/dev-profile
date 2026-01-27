@@ -1,0 +1,17 @@
+{
+  "name": "@caiokf/notion-proxy-worker",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "cf:deploy": "wrangler deploy",
+    "cf:secret": "wrangler secret put",
+    "type-check": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20241218.0",
+    "typescript": "^5.7.2",
+    "wrangler": "^3.114.16"
+  }
+}

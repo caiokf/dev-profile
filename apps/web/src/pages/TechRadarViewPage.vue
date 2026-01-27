@@ -95,9 +95,10 @@
   import { Radar } from "../domain/radar/models/radar";
   import { DataProviderSample } from "../domain/radar/data-providers/data-provider-sample";
   import { DataProviderGoogleSheets } from "../domain/radar/data-providers/data-provider-google-sheets";
+  import { DataProviderNotion } from "../domain/radar/data-providers/data-provider-notion";
   import type { TechRadarDataProvider } from "../domain/radar/data-providers/data-provider";
   import type { PositionedBlip, QuadrantGeometryConfig, QuadrantPosition } from "../domain/radar/types";
-  import { QUADRANT_SIZE, RADAR_SHEET_ID, GOOGLE_API_KEY, MOBILE_BREAKPOINT, MIN_LOADING_DURATION_MS } from "../domain/radar/constants";
+  import { QUADRANT_SIZE, RADAR_SHEET_ID, GOOGLE_API_KEY, NOTION_PAGE_ID, NOTION_WORKER_URL, MOBILE_BREAKPOINT, MIN_LOADING_DURATION_MS } from "../domain/radar/constants";
   import { calculateRingRadii } from "../domain/radar/geometry/svg-layout.geometry";
   import { BlipPositioning } from "../domain/radar/geometry/blip-positioning.geometry";
 
@@ -109,11 +110,13 @@
 
   const route = useRoute();
 
-  // Data provider - use Google Sheets if configured, otherwise fallback to sample data
+  // Data provider - use Notion if configured, then Google Sheets, then fallback to sample data
   const dataProvider: TechRadarDataProvider =
-    RADAR_SHEET_ID && GOOGLE_API_KEY
-      ? new DataProviderGoogleSheets({ sheetId: RADAR_SHEET_ID, apiKey: GOOGLE_API_KEY })
-      : new DataProviderSample();
+    NOTION_PAGE_ID && NOTION_WORKER_URL
+      ? new DataProviderNotion({ pageId: NOTION_PAGE_ID, workerUrl: NOTION_WORKER_URL })
+      : RADAR_SHEET_ID && GOOGLE_API_KEY
+        ? new DataProviderGoogleSheets({ sheetId: RADAR_SHEET_ID, apiKey: GOOGLE_API_KEY })
+        : new DataProviderSample();
 
   const radar = shallowRef<Radar | null>(null);
   const selectedQuadrant = ref<QuadrantPosition | null>(null);

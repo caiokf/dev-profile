@@ -201,12 +201,13 @@
 <script setup lang="ts">
   import { ref, computed, onMounted } from "vue";
   import { DataProviderGoogleSheets } from "../domain/radar/data-providers/data-provider-google-sheets";
+  import { DataProviderNotion } from "../domain/radar/data-providers/data-provider-notion";
   import { DataProviderSample } from "../domain/radar/data-providers/data-provider-sample";
   import type {
     TechRadarDataProvider,
     RadarVersion,
   } from "../domain/radar/data-providers/data-provider";
-  import { RADAR_SHEET_ID, GOOGLE_API_KEY } from "../domain/radar/constants";
+  import { RADAR_SHEET_ID, GOOGLE_API_KEY, NOTION_PAGE_ID, NOTION_WORKER_URL } from "../domain/radar/constants";
 
   const versions = ref<RadarVersion[]>([]);
   const loading = ref(true);
@@ -218,10 +219,13 @@
     return `/tech-radar/${encodeURIComponent(versions.value[0].id)}`;
   });
 
+  // Data provider - use Notion if configured, then Google Sheets, then fallback to sample data
   const dataProvider: TechRadarDataProvider =
-    RADAR_SHEET_ID && GOOGLE_API_KEY
-      ? new DataProviderGoogleSheets({ sheetId: RADAR_SHEET_ID, apiKey: GOOGLE_API_KEY })
-      : new DataProviderSample();
+    NOTION_PAGE_ID && NOTION_WORKER_URL
+      ? new DataProviderNotion({ pageId: NOTION_PAGE_ID, workerUrl: NOTION_WORKER_URL })
+      : RADAR_SHEET_ID && GOOGLE_API_KEY
+        ? new DataProviderGoogleSheets({ sheetId: RADAR_SHEET_ID, apiKey: GOOGLE_API_KEY })
+        : new DataProviderSample();
 
   onMounted(async () => {
     try {

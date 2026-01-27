@@ -8,6 +8,10 @@ export const GOOGLE_API_KEY = import.meta.env.VITE_GOOGLE_API_KEY as string | un
 
 export const RADAR_SHEET_ID = "1B-ojvUlqVMigLGGs8egpn-0YaVTDmqe1Vb6EL2ji-aM";
 
+export const NOTION_PAGE_ID = import.meta.env.VITE_NOTION_PAGE_ID as string | undefined;
+
+export const NOTION_WORKER_URL = import.meta.env.VITE_NOTION_WORKER_URL as string | undefined;
+
 // -----------------------------------------------------------------------------
 // RINGS
 // -----------------------------------------------------------------------------

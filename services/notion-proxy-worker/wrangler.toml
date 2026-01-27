@@ -1,0 +1,6 @@
+name = "dev-profile-notion-proxy"
+main = "src/index.ts"
+compatibility_date = "2025-01-27"
+
+# Environment variables (set via wrangler secret)
+# NOTION_API_KEY - from Notion integration settings
