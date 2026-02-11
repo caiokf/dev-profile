@@ -1,5 +1,18 @@
 [
   {
+    "title": "AI Shifts Dev Bottlenecks from Code to Review",
+    "date": "2026-02-11",
+    "tags": [
+      "ai",
+      "devex",
+      "workflow",
+      "strategy"
+    ],
+    "slug": "ai-shifts-dev-bottlenecks-from-code-to-review",
+    "filename": "2026-02-11-ai-shifts-dev-bottlenecks-from-code-to-review.md",
+    "weekKey": "2026-07"
+  },
+  {
     "title": "Orchestrating 20 Claude Instances",
     "date": "2026-01-22",
     "tags": [
