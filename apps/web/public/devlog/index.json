@@ -26,6 +26,18 @@
     "weekKey": "2026-07"
   },
   {
+    "title": "Quiet Success, Loud Failures",
+    "date": "2026-02-06",
+    "tags": [
+      "devex",
+      "ai",
+      "tools"
+    ],
+    "slug": "quiet-success-loud-failures",
+    "filename": "2026-02-06-quiet-success-loud-failures.md",
+    "weekKey": "2026-06"
+  },
+  {
     "title": "Orchestrating 20 Claude Instances",
     "date": "2026-01-22",
     "tags": [
