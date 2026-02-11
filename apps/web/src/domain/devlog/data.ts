@@ -1,5 +1,6 @@
 import fm from "front-matter";
 import { marked } from "marked";
+import { DateTime } from "luxon";
 import { getWeekKey } from "@caiokf/shared";
 import devlogIndex from "virtual:devlog-index";
 
@@ -16,9 +17,10 @@ export type HasWeekKey = {
   weekKey: string;
 };
 
-export type EntryMetadata = EntryFrontmatter & HasWeekKey & {
-  filename: string;
-};
+export type EntryMetadata = EntryFrontmatter &
+  HasWeekKey & {
+    filename: string;
+  };
 
 export type EntryContent = {
   content: string;
@@ -51,10 +53,16 @@ function getDevlogBaseUrl(): string {
 }
 
 /**
- * Get the devlog index (metadata only) - bundled at build time
+ * Get the devlog index (metadata only) - bundled at build time.
+ * Filters out entries with a future date.
  */
 export function fetchIndex(): Promise<EntryMetadata[]> {
-  return Promise.resolve(devlogIndex);
+  const today = DateTime.now().startOf("day");
+  const entries = devlogIndex.filter((entry) => {
+    const entryDate = DateTime.fromISO(entry.date);
+    return entryDate <= today;
+  });
+  return Promise.resolve(entries);
 }
 
 /**
@@ -151,4 +159,3 @@ export function getEntryCounts<T extends HasWeekKey>(entries: T[]): Map<string, 
 
   return counts;
 }
-
