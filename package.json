@@ -8,6 +8,7 @@
     "preview": "pnpm --filter @caiokf/web preview",
     "type-check": "pnpm --filter @caiokf/web type-check",
     "test": "pnpm --filter @caiokf/web test",
+    "test:verbose": "pnpm --filter @caiokf/web test:verbose",
     "test:ui": "pnpm --filter @caiokf/web test:ui",
     "test:coverage": "pnpm --filter @caiokf/web test:coverage",
     "devlog:dev": "pnpm --filter @caiokf/devlog-slack-workflow dev",
