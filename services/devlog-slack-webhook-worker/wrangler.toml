@@ -1,6 +1,7 @@
 name = "devlog-slack-webhook"
 main = "src/index.ts"
 compatibility_date = "2025-12-25"
+account_id = "e59e9c6661466ac66902778ec7d8a0bf"
 
 # Environment variables (set these via wrangler secret)
 # SLACK_SIGNING_SECRET - from Slack app settings
